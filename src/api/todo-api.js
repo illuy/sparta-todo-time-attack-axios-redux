@@ -7,7 +7,11 @@ const baseURL = "http://localhost:5000/todos";
 // NOTE - 힌트:
 // - baseURL을 설정하세요.
 // - 요청 헤더에 "Content-Type"을 "application/json"으로 설정하세요.
-export const todoClient = null;
+
+export const todoClient = axios.create({
+  baseURL,
+  headers:{"Content-Type":"application/json"}
+});
 
 // 모든 TODO 목록 가져오기 (GET /todos)
 export const getTodos = async () => {
@@ -16,6 +20,9 @@ export const getTodos = async () => {
   // - await 키워드를 사용하여 비동기 요청을 처리하세요.
   // - response 객체의 data 속성을 사용하여 결과 데이터를 추출하세요.
   // - 결과 데이터를 반환하세요.
+  const {data} = await todoClient.get("/");
+  return data
+
 };
 
 // 특정 ID의 TODO 상세 정보 가져오기 (GET /todos/:id)
@@ -25,6 +32,8 @@ export const getSingleTodo = async (id) => {
   // - URL 파라미터에 id 값을 전달하세요.
   // - response 객체의 data 속성을 사용하여 결과 데이터를 추출하세요.
   // - 결과 데이터를 반환하세요.
+  const {data} = await todoClient.get(`/${id}`);
+  return data;
 };
 
 // 새로운 TODO 추가하기 (POST /todos)
@@ -34,6 +43,8 @@ export const createTodo = async (todo) => {
   // - todo 객체를 요청 본문에 포함시키세요.
   // - response 객체의 data 속성을 사용하여 결과 데이터를 추출하세요.
   // - 결과 데이터를 반환하세요.
+  const {data} = await todoClient.post("/", todo);
+  return data;
 };
 
 // 특정 ID의 TODO 삭제하기 (DELETE /todos/:id)
@@ -42,6 +53,7 @@ export const deleteTodo = async (id) => {
   // NOTE - 힌트:
   // - URL 파라미터에 id 값을 전달하세요.
   // - 삭제된 ID를 반환하세요.
+  const {data} = await todoClient.delete(`/${id}`);
 };
 
 // 특정 ID의 TODO 수정하기 (PATCH /todos/:id)
@@ -51,4 +63,5 @@ export const updateTodo = async (id, todo) => {
   // - URL 파라미터에 id 값을 전달하세요.
   // - todo 객체를 요청 body에 포함시키세요.
   // - 수정된 ID를 반환하세요.
+  const {data} = await todoClient.patch(`/${id}`, todo);
 };
